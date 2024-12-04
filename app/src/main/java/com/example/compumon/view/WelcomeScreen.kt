@@ -1,4 +1,4 @@
-package com.yourappname.ui.welcome
+package com.example.compumon.view
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button

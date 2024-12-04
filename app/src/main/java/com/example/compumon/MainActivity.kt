@@ -8,13 +8,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.compumon.ui.theme.CompuMonTheme
-import com.yourappname.ui.settings.SettingsScreen
-import com.yourappname.ui.welcome.WelcomeScreen
+import com.example.compumon.view.SettingsScreen
+import com.example.compumon.view.WelcomeScreen
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        
+
         enableEdgeToEdge()
         setContent {
             CompuMonTheme {
