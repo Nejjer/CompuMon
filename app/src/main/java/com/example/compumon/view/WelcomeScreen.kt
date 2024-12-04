@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.compumon.Screen
 
 @Composable
 fun WelcomeScreen(navController: NavController) {
@@ -72,7 +73,7 @@ fun WelcomeScreen(navController: NavController) {
                 horizontalArrangement = Arrangement.Center
             ) {
                 Button(
-                    onClick = { navController.navigate("settings") },
+                    onClick = { navController.navigate(Screen.Settings.route) },
                     modifier = Modifier.fillMaxWidth(0.5f) // Кнопка занимает 50% ширины
                 ) {
                     Text(text = "Продолжить")

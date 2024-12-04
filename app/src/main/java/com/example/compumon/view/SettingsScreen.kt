@@ -11,6 +11,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.compumon.Screen
 import com.example.compumon.viewmodels.SettingsViewModel
 
 @Composable
@@ -79,7 +80,7 @@ fun SettingsScreen(navController: NavController, viewModel: SettingsViewModel = 
                     "Адреса серверов сохранены",
                     Toast.LENGTH_SHORT
                 ).show()
-                navController.popBackStack() // Возвращаемся на главный экран
+                navController.navigate(Screen.Main.route) // Возвращаемся на главный экран
             },
             modifier = Modifier.fillMaxWidth(0.6f)
         ) {
