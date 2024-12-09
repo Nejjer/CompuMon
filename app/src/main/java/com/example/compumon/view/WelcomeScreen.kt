@@ -68,30 +68,6 @@ fun WelcomeScreen() {
                     Text(text = "Далее")
                 }
             }
-        } else {
-            // Кнопка "Продолжить" на последнем шаге
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.BottomCenter)
-                    .padding(16.dp),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Button(
-                    onClick = {
-                        launchViewModel.markFirstLaunchComplete()
-                        context.startActivity(
-                            Intent(
-                                context,
-                                MainActivity::class.java
-                            )
-                        )
-                    },
-                    modifier = Modifier.fillMaxWidth(0.5f) // Кнопка занимает 50% ширины
-                ) {
-                    Text(text = "Продолжить")
-                }
-            }
         }
     }
 }
