@@ -1,22 +1,26 @@
 package com.example.compumon.view
 
+import android.content.Intent
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
-import com.example.compumon.Screen
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.compumon.MainActivity
+import com.example.compumon.viewmodels.LaunchViewModel
 
 @Composable
-fun WelcomeScreen(navController: NavController) {
+fun WelcomeScreen() {
     var currentStep by remember { mutableStateOf(0) }
+    val context = LocalContext.current
+    val launchViewModel: LaunchViewModel = viewModel()
 
     Box(modifier = Modifier.fillMaxSize()) {
         // Контент в верхней части экрана
@@ -43,6 +47,7 @@ fun WelcomeScreen(navController: NavController) {
                 2 -> WelcomeStep(
                     title = "Настройки",
                     description = "После установки серверов введите их адреса в настройках приложения.",
+                    showSettings = true
                 )
             }
         }
@@ -73,7 +78,15 @@ fun WelcomeScreen(navController: NavController) {
                 horizontalArrangement = Arrangement.Center
             ) {
                 Button(
-                    onClick = { navController.navigate(Screen.Settings.route) },
+                    onClick = {
+                        launchViewModel.markFirstLaunchComplete()
+                        context.startActivity(
+                            Intent(
+                                context,
+                                MainActivity::class.java
+                            )
+                        )
+                    },
                     modifier = Modifier.fillMaxWidth(0.5f) // Кнопка занимает 50% ширины
                 ) {
                     Text(text = "Продолжить")
@@ -87,6 +100,7 @@ fun WelcomeScreen(navController: NavController) {
 fun WelcomeStep(
     title: String,
     description: String,
+    showSettings: Boolean = false
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -104,12 +118,12 @@ fun WelcomeStep(
             fontSize = 16.sp,
             modifier = Modifier.padding(bottom = 16.dp)
         )
+        if (showSettings) SettingsScreen()
     }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun PreviewWelcomeScreen() {
-    val navController = rememberNavController()
-    WelcomeScreen(navController = navController)
+    WelcomeScreen()
 }

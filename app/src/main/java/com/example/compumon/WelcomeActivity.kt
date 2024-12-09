@@ -4,12 +4,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.example.compumon.view.CpuStatusScreen
-import com.example.compumon.viewmodels.CpuStatusViewModel
+import com.example.compumon.view.WelcomeScreen
 
-
-class MainActivity : ComponentActivity() {
-    val viewModel: CpuStatusViewModel = CpuStatusViewModel()
+class WelcomeActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -17,8 +14,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         setContent {
-            CpuStatusScreen(viewModel)
+            WelcomeScreen()
         }
     }
 }
-
