@@ -37,4 +37,10 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
             }
         }
     }
+
+    fun getServerAddresses() {
+        viewModelScope.launch {
+            serverAddressDao.getServerAddresses()
+        }
+    }
 }

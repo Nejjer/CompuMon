@@ -1,15 +1,14 @@
 package com.devofy.compumon
 
+import MainScreen
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.devofy.compumon.view.CpuStatusScreen
-import com.devofy.compumon.viewmodels.CpuStatusViewModel
 
 
 class MainActivity : ComponentActivity() {
-    val viewModel: CpuStatusViewModel = CpuStatusViewModel()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -17,7 +16,9 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         setContent {
-            CpuStatusScreen(viewModel)
+
+
+            MainScreen()
         }
     }
 }

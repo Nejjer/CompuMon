@@ -7,12 +7,13 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.devofy.compumon.viewmodels.CpuStatusViewModel
+import com.devofy.compumon.view.components.LoadingIndicator
+import com.devofy.compumon.viewmodels.PCStatusViewModel
 
 
 @Composable
-fun CpuStatusScreen(viewModel: CpuStatusViewModel) {
-    val cpuStatus by viewModel.cpuStatus
+fun PCStatusScreen(viewModel: PCStatusViewModel) {
+    val pcStatus by viewModel.pcStatus
 
     Surface(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -21,7 +22,7 @@ fun CpuStatusScreen(viewModel: CpuStatusViewModel) {
                 .padding(16.dp),
             verticalArrangement = Arrangement.Center
         ) {
-            if (cpuStatus != null) {
+            if (pcStatus != null) {
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(2), // Указываем два столбца
                     modifier = Modifier.fillMaxSize(),
@@ -30,59 +31,59 @@ fun CpuStatusScreen(viewModel: CpuStatusViewModel) {
                     verticalArrangement = Arrangement.spacedBy(24.dp)   // Отступы по вертикали
                 ) {
                     item() {
-                        ProgressWithTitle(
+                        LoadingIndicator(
                             title = "CPU",
-                            currentValue = cpuStatus!!.cpu.load,
+                            currentValue = pcStatus!!.cpu.load,
                             maxValue = 100.0,
                             unit = "%"
                         )
                     }
                     item() {
-                        ProgressWithTitle(
+                        LoadingIndicator(
                             title = "Temp",
-                            currentValue = cpuStatus!!.cpu.temperature,
+                            currentValue = pcStatus!!.cpu.temperature,
                             maxValue = 100.0,
                             unit = "°C"
                         )
                     }
                     item() {
-                        ProgressWithTitle(
+                        LoadingIndicator(
                             title = "FanSpeed",
-                            currentValue = cpuStatus!!.cpu.fanSpeed.toDouble(),
+                            currentValue = pcStatus!!.cpu.fanSpeed.toDouble(),
                             maxValue = 1800.0,
                             unit = "rpm"
                         )
                     }
                     item() {}
                     item() {
-                        ProgressWithTitle(
+                        LoadingIndicator(
                             title = "GPU",
-                            currentValue = cpuStatus!!.gpu.load,
+                            currentValue = pcStatus!!.gpu.load,
                             maxValue = 100.0,
                             unit = "%"
                         )
                     }
                     item() {
-                        ProgressWithTitle(
+                        LoadingIndicator(
                             title = "Gpu temp",
-                            currentValue = cpuStatus!!.gpu.temperature,
+                            currentValue = pcStatus!!.gpu.temperature,
                             maxValue = 100.0,
                             unit = "°C"
                         )
                     }
                     item() {
-                        ProgressWithTitle(
+                        LoadingIndicator(
                             title = "Gpu memory",
-                            currentValue = cpuStatus!!.gpu.memory.used,
-                            maxValue = cpuStatus!!.gpu.memory.total,
+                            currentValue = pcStatus!!.gpu.memory.used,
+                            maxValue = pcStatus!!.gpu.memory.total,
                             unit = "Gb"
                         )
                     }
                     item() {
-                        ProgressWithTitle(
+                        LoadingIndicator(
                             title = "Memory",
-                            currentValue = cpuStatus!!.ram.used,
-                            maxValue = cpuStatus!!.ram.total,
+                            currentValue = pcStatus!!.ram.used,
+                            maxValue = pcStatus!!.ram.total,
                             unit = "Gb"
                         )
                     }

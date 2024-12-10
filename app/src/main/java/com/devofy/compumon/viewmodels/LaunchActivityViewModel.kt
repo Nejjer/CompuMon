@@ -11,7 +11,7 @@ class LaunchViewModel(application: Application) :
         application.getSharedPreferences(KEY_PREF, Application.MODE_PRIVATE)
 
     companion object {
-        private const val KEY_FIRST_LAUNCH = "is_first_launch1"
+        private const val KEY_FIRST_LAUNCH = "is_first_launc"
         private const val KEY_PREF = "app_prefs"
     }
 

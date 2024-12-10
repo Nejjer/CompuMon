@@ -1,4 +1,4 @@
-package com.devofy.compumon.view
+package com.devofy.compumon.view.components
 
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
@@ -26,14 +26,14 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.devofy.compumon.viewmodels.CpuStatusViewModel.Companion.POLLING_INTERVAL_MS
 
 @Composable
-fun ProgressWithTitle(
+fun LoadingIndicator(
     title: String,
     currentValue: Double,
     maxValue: Double,
-    unit: String
+    unit: String,
+    pollingIntervalMs: Int = 500
 ) {
     var progress = currentValue.toFloat() / maxValue.toFloat()
 
@@ -41,7 +41,7 @@ fun ProgressWithTitle(
     val animatedProgress = animateFloatAsState(
         targetValue = progress,
         animationSpec = tween(
-            durationMillis = POLLING_INTERVAL_MS.toInt(),
+            durationMillis = pollingIntervalMs,
             easing = FastOutSlowInEasing
         ),
         label = ""
@@ -107,11 +107,12 @@ fun GridOfProgress() {
     ) {
         items(6) { index ->
             // Пример значений для нескольких элементов
-            ProgressWithTitle(
+            LoadingIndicator(
                 title = "Загрузка $index",
                 currentValue = ((index + 1) * 20).toDouble(),
                 maxValue = 100.0,
-                unit = "МБ"
+                unit = "МБ",
+                pollingIntervalMs = 500
             )
         }
     }

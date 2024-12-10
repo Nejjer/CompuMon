@@ -39,19 +39,14 @@ data class MemoryStatus(
     val used: Double
 )
 
-class CpuStatusViewModel : ViewModel() {
+class PCStatusViewModel(private val apiUrl: String, private val pollingInterval: Long) :
+    ViewModel() {
 
     private val client by lazy { OkHttpClient() } // Lazy initialization for OkHttpClient
 
     // State to hold the CPU status data, initially null
     private val _cpuStatus = mutableStateOf<PCStatus?>(null)
-    val cpuStatus: State<PCStatus?> get() = _cpuStatus
-
-    // Polling interval in milliseconds
-    companion object {
-        const val POLLING_INTERVAL_MS = 500L
-        const val API_URL = "http://192.168.1.164:5000/api/getPcStatus"
-    }
+    val pcStatus: State<PCStatus?> get() = _cpuStatus
 
     init {
         startPolling()
@@ -62,15 +57,16 @@ class CpuStatusViewModel : ViewModel() {
         viewModelScope.launch {
             while (true) {
                 fetchCpuStatus()
-                delay(POLLING_INTERVAL_MS)
+                delay(pollingInterval)
             }
         }
     }
 
     // Fetches the CPU status from the API
     private suspend fun fetchCpuStatus() {
+        if (apiUrl.isEmpty()) return
         try {
-            val response = executeRequest(API_URL)
+            val response = executeRequest("$apiUrl/api/getPcStatus")
             response?.let { json ->
                 val cpuStatus = parseCpuStatus(json)
                 _cpuStatus.value = cpuStatus
