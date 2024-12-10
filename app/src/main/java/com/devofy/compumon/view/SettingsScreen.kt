@@ -50,7 +50,19 @@ fun SettingsScreen(viewModel: SettingsViewModel = viewModel()) {
             OutlinedTextField(
                 value = viewModel.pcServer.value,
                 onValueChange = { newVal -> viewModel.pcServer.value = newVal },
-                label = { Text("Сервер 1") },
+                label = { Text("PC") },
+                modifier = Modifier.fillMaxWidth(),
+                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Text),
+                singleLine = true
+            )
+
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            OutlinedTextField(
+                value = viewModel.selfHostedServer.value,
+                onValueChange = { newVal -> viewModel.selfHostedServer.value = newVal },
+                label = { Text("SelfHosted") },
                 modifier = Modifier.fillMaxWidth(),
                 keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Text),
                 singleLine = true
@@ -61,18 +73,7 @@ fun SettingsScreen(viewModel: SettingsViewModel = viewModel()) {
             OutlinedTextField(
                 value = viewModel.remoteServer.value,
                 onValueChange = { newVal -> viewModel.remoteServer.value = newVal },
-                label = { Text("Сервер 2") },
-                modifier = Modifier.fillMaxWidth(),
-                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Text),
-                singleLine = true
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            OutlinedTextField(
-                value = viewModel.selfHostedServer.value,
-                onValueChange = { newVal -> viewModel.selfHostedServer.value = newVal },
-                label = { Text("Сервер 3") },
+                label = { Text("Remote") },
                 modifier = Modifier.fillMaxWidth(),
                 keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Text),
                 singleLine = true

@@ -17,6 +17,7 @@ import com.devofy.compumon.viewmodels.SettingsViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalPagerApi::class)
 @Composable
@@ -29,18 +30,11 @@ fun MainScreen() {
     val selfServerViewModel = PCStatusViewModel(settings.selfHostedServer.value, 500)
     val remoteServerViewModel = PCStatusViewModel(settings.remoteServer.value, 500)
 
-    var selectedTab by remember { mutableIntStateOf(0) }
+    val tabs = listOf("PC", "SelfHosted", "Remote")
 
-    val tabs = listOf("PC 1", "PC 2", "PC 3")
+    val pagerState = rememberPagerState(initialPage = 0)
+    val coroutineScope = rememberCoroutineScope()
 
-    val pagerState = rememberPagerState(initialPage = selectedTab)
-    // LaunchedEffect обрабатывает изменение вкладки
-    LaunchedEffect(selectedTab) {
-        pagerState.animateScrollToPage(selectedTab)
-    }
-    LaunchedEffect(pagerState.currentPage) {
-        selectedTab = pagerState.currentPage
-    }
 
     Scaffold(
         topBar = {
@@ -75,23 +69,22 @@ fun MainScreen() {
         }
     ) { innerPadding ->
         Column(modifier = Modifier.padding(innerPadding)) {
-            // TabRow для переключения между вкладками
-            TabRow(
-                selectedTabIndex = pagerState.currentPage,
-                modifier = Modifier.fillMaxWidth()
-            ) {
+            // Tabs
+            TabRow(selectedTabIndex = pagerState.currentPage) {
                 tabs.forEachIndexed { index, title ->
                     Tab(
+                        text = { Text(title) },
                         selected = pagerState.currentPage == index,
                         onClick = {
-                            selectedTab = index
-                        },
-                        text = { Text(title) }
+                            coroutineScope.launch {
+                                pagerState.animateScrollToPage(index)
+                            }
+                        }
                     )
                 }
             }
 
-            // Содержимое вкладок с HorizontalPager для свайпов
+            // Swipeable Pager
             HorizontalPager(
                 count = tabs.size,
                 state = pagerState,
