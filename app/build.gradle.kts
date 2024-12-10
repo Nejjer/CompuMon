@@ -54,6 +54,7 @@ dependencies {
     implementation("androidx.room:room-ktx:2.6.1")
     implementation("com.squareup.okhttp3:okhttp:4.11.0")
     implementation("androidx.navigation:navigation-compose:2.8.4")
+    implementation("com.google.code.gson:gson:2.8.9")
     testImplementation(libs.junit)
     ksp("androidx.room:room-compiler:2.6.1")
     androidTestImplementation(libs.androidx.junit)

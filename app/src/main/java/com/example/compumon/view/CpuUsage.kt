@@ -1,5 +1,8 @@
 package com.example.compumon.view
 
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,19 +19,35 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.compumon.viewmodels.CpuStatusViewModel.Companion.POLLING_INTERVAL_MS
 
 @Composable
 fun ProgressWithTitle(
     title: String,
-    currentValue: Int,
-    maxValue: Int,
+    currentValue: Double,
+    maxValue: Double,
     unit: String
 ) {
-    val progress = currentValue.toFloat() / maxValue.toFloat()
+    var progress = currentValue.toFloat() / maxValue.toFloat()
+
+    // Анимируем изменение прогресса
+    val animatedProgress = animateFloatAsState(
+        targetValue = progress,
+        animationSpec = tween(durationMillis = POLLING_INTERVAL_MS.toInt(), easing = FastOutSlowInEasing),
+        label = ""
+    )
+
+    LaunchedEffect(Unit) {
+        // Плавно увеличиваем прогресс от 0 до 1
+        progress = 1f
+    }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -38,7 +57,7 @@ fun ProgressWithTitle(
         Text(
             text = title,
             style = MaterialTheme.typography.titleMedium,
-            modifier = Modifier.padding(bottom = 16.dp)
+            modifier = Modifier.padding(bottom = 8.dp)
         )
 
         Box(
@@ -46,9 +65,12 @@ fun ProgressWithTitle(
             modifier = Modifier.size(150.dp)
         ) {
             CircularProgressIndicator(
-                progress = { progress },
-                strokeWidth = 8.dp,
-                modifier = Modifier.fillMaxSize()
+                progress = { animatedProgress.value },
+                strokeWidth = 10.dp,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .graphicsLayer { rotationZ = -90f },
+                strokeCap = StrokeCap.Round,
             )
 
             Row(
@@ -78,14 +100,14 @@ fun GridOfProgress() {
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(16.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp), // Отступы по горизонтали
-        verticalArrangement = Arrangement.spacedBy(16.dp)   // Отступы по вертикали
+        verticalArrangement = Arrangement.spacedBy(24.dp)   // Отступы по вертикали
     ) {
         items(6) { index ->
             // Пример значений для нескольких элементов
             ProgressWithTitle(
                 title = "Загрузка $index",
-                currentValue = (index + 1) * 20,
-                maxValue = 100,
+                currentValue = ((index + 1) * 20).toDouble(),
+                maxValue = 100.0,
                 unit = "МБ"
             )
         }

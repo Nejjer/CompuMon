@@ -4,22 +4,39 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.gson.Gson
+import com.google.gson.JsonSyntaxException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import org.json.JSONObject
 import java.io.IOException
 
-// Data class representing the CPU status
-data class CpuStatus(
-    val averageTemp: Double, // The average temperature of the CPU in degrees Celsius
-    val cpuUsage: Double,    // The percentage of CPU usage
-    val fanSpeed: Int,       // The speed of the fan in RPM (Revolutions Per Minute)
-    val totalMemory: Double, // The total available memory in GB
-    val usedMemory: Double   // The memory currently in use in GB
+
+data class PCStatus(
+    val cpu: CpuStatus2,
+    val gpu: GpuStatus,
+    val ram: MemoryStatus
+)
+
+data class CpuStatus2(
+    val load: Double,
+    val temperature: Double,
+    val fanSpeed: Int
+)
+
+data class GpuStatus(
+    val load: Double,
+    val temperature: Double,
+    val memory: MemoryStatus,
+    val fanSpeed: Int
+)
+
+data class MemoryStatus(
+    val total: Double,
+    val used: Double
 )
 
 class CpuStatusViewModel : ViewModel() {
@@ -27,13 +44,13 @@ class CpuStatusViewModel : ViewModel() {
     private val client by lazy { OkHttpClient() } // Lazy initialization for OkHttpClient
 
     // State to hold the CPU status data, initially null
-    private val _cpuStatus = mutableStateOf<CpuStatus?>(null)
-    val cpuStatus: State<CpuStatus?> get() = _cpuStatus
+    private val _cpuStatus = mutableStateOf<PCStatus?>(null)
+    val cpuStatus: State<PCStatus?> get() = _cpuStatus
 
     // Polling interval in milliseconds
-    private companion object {
+    companion object {
         const val POLLING_INTERVAL_MS = 500L
-        const val API_URL = "http://192.168.1.119:5000/api/getCpuStatus"
+        const val API_URL = "http://192.168.1.164:5000/api/getPcStatus"
     }
 
     init {
@@ -82,15 +99,14 @@ class CpuStatusViewModel : ViewModel() {
             }
         }
 
-    // Parses the JSON response into a CpuStatus object
-    private fun parseCpuStatus(json: String): CpuStatus {
-        val jsonObject = JSONObject(json)
-        return CpuStatus(
-            averageTemp = jsonObject.getDouble("averageTemp"),
-            cpuUsage = jsonObject.getDouble("cpuUsage"),
-            fanSpeed = jsonObject.getInt("fanSpeed"),
-            totalMemory = jsonObject.getDouble("totalMemory"),
-            usedMemory = jsonObject.getDouble("usedMemory")
-        )
+    // Parsing the JSON response into a PCStatus object using Gson
+    private fun parseCpuStatus(json: String): PCStatus? {
+        return try {
+            val gson = Gson()
+            gson.fromJson(json, PCStatus::class.java)
+        } catch (e: JsonSyntaxException) {
+            e.printStackTrace()
+            null
+        }
     }
 }
