@@ -17,7 +17,7 @@ import java.io.IOException
 
 data class PCStatus(
     val cpu: CpuStatus2,
-    val gpu: GpuStatus,
+    val gpu: GpuStatus?,
     val ram: MemoryStatus
 )
 
@@ -39,6 +39,14 @@ data class MemoryStatus(
     val used: Double
 )
 
+// Data class для хранения данных о каждом индикаторе
+data class IndicatorData(
+    val title: String,
+    val currentValue: Double,
+    val maxValue: Double,
+    val unit: String
+)
+
 class PCStatusViewModel(private val apiUrl: String, private val pollingInterval: Long) :
     ViewModel() {
 
@@ -47,6 +55,7 @@ class PCStatusViewModel(private val apiUrl: String, private val pollingInterval:
     // State to hold the CPU status data, initially null
     private val _cpuStatus = mutableStateOf<PCStatus?>(null)
     val pcStatus: State<PCStatus?> get() = _cpuStatus
+    val isServerApiUrlEmpty = apiUrl.isEmpty();
 
     init {
         startPolling()

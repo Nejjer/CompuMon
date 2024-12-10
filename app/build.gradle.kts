@@ -52,6 +52,8 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation("androidx.room:room-runtime:2.6.1")
     implementation("androidx.compose.material:material:1.7.5")
+    implementation("com.google.accompanist:accompanist-pager:0.24.13-rc")
+    implementation("com.google.accompanist:accompanist-pager-indicators:0.24.13-rc")
     implementation("androidx.room:room-ktx:2.6.1")
     implementation("com.squareup.okhttp3:okhttp:4.11.0")
     implementation("androidx.navigation:navigation-compose:2.8.4")

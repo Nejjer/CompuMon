@@ -29,10 +29,12 @@ fun SettingsScreen(viewModel: SettingsViewModel = viewModel()) {
     }
 
     Column(
-        modifier = Modifier
-            .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceBetween
+        verticalArrangement = Arrangement.SpaceBetween,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+            .padding(top = 24.dp)
     ) {
         Column(
             modifier = Modifier
