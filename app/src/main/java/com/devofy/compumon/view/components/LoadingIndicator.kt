@@ -22,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.tooling.preview.Preview
@@ -74,6 +75,7 @@ fun LoadingIndicator(
                     .fillMaxSize()
                     .graphicsLayer { rotationZ = -90f },
                 strokeCap = StrokeCap.Round,
+                trackColor = Color.LightGray
             )
 
             Row(

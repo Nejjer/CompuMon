@@ -37,6 +37,7 @@ fun PCStatusScreen(viewModel: PCStatusViewModel) {
             indicators.add(IndicatorData("GPU", gpu.load, 100.0, "%"))
             indicators.add(IndicatorData("Gpu temp", gpu.temperature, 100.0, "°C"))
             indicators.add(IndicatorData("Gpu memory", gpu.memory.used, gpu.memory.total, "Gb"))
+            indicators.add(IndicatorData("FanSpeed", gpu.fanSpeed.toDouble(), 1800.0, "rpm"))
         }
 
         // Добавление данных RAM
